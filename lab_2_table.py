@@ -3,9 +3,11 @@ from prettytable import PrettyTable
 import numpy as np
 from scipy.integrate import quad
 
+
 # Функция распределения
 def f(x):
     return 3 / 14 * np.sqrt(x)
+
 
 # Интервал
 a, b = 1, 4
@@ -15,6 +17,7 @@ nums = list(map(int, input("Введите 3 числа N: ").split()))
 
 mytable = PrettyTable()
 mytable.field_names = ["N", "Mx", "m", "D1 - погрешность Mx", "Dx", "g", "D2 - погрешность Dx"]
+
 
 def calculate(N):
     # Вычисление математического ожидания
