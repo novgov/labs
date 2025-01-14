@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Результат</title>
+</head>
+<body>
+<h2>Результат:</h2>
+<div class="wrapper">
+    <p> D1 = {{d1}}</p>
+    <p> D2 = {{d2}}</p>
+    <p> a = {{a}}</p>
+    <p> b = {{b}}</p>
+    <p> N = {{N}}</p>
+
+</div>
+<div class="wrapper">
+<table>
+    <tbody>
+        {% for row in result|batch(5) %}
+            <tr>
+                {% for num in row %}
+                    <td>{{num}}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    </div>
+</body>
+</html>
+<style>
+    /* Основные стили для body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    font-size: 20px;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Стили для заголовка */
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+table {
+        border-collapse: separate;
+        border-spacing: 20px 10px;
+        width: 100%;
+    }
+.wrapper {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 700px;
+    width: 100%;
+}
+th, td {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+</style>

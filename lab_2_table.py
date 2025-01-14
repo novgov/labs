@@ -1,46 +1,39 @@
-import pandas as pd
 from prettytable import PrettyTable
 import numpy as np
-from scipy.integrate import quad
-
 
 # Функция распределения
 def f(x):
-    return 3 / 14 * np.sqrt(x)
-
+    return ((7*x+1)**2)**(1/3)
 
 # Интервал
-a, b = 1, 4
+a, b = 0, 1
 
-# Число точек для аппроксимации
+# Число точек для ппроксимации
 nums = list(map(int, input("Введите 3 числа N: ").split()))
 
-mytable = PrettyTable()
-mytable.field_names = ["N", "Mx", "m", "D1 - погрешность Mx", "Dx", "g", "D2 - погрешность Dx"]
+Mx = 93/35
+Dx = 47.3681
 
+# Создание таблицы
+table = PrettyTable()
+table.field_names = ["N", "Mx", "m", "D1", "Dx", "g", "D2"]
 
-def calculate(N):
-    # Вычисление математического ожидания
-    Mx, _ = quad(lambda x: x * f(x), a, b)
+for i in range(len(nums)):
+    N = nums[i]
+    r = np.random.uniform(0, 1, size=N)
 
-    # Вычисление дисперсии
-    Dx, _ = quad(lambda x: (x - Mx)**2 * f(x), a, b)
+    xi = f(r)
 
-    #вычисление погрешности
-    m = np.mean(np.random.uniform(a, b, size=N))
-    g = np.var(np.random.uniform(a, b, size=N))
+    # вычисление погрешности
+    m = sum(xi) / N
+    g = 1 / N * sum(xi ** 2) - m ** 2
 
     # Вычисление погрешностей
     D1 = abs(Mx - m)
     D2 = abs(Dx - g)
 
     # Заполнение таблицы
-    mytable.add_row([N, round(Mx, 4), round(m, 4), round(D1, 4), round(Dx, 4), round(g, 4), round(D2, 4)])
-
-
-for n in nums:
-    calculate(n)
+    table.add_row([N, np.round(Mx, 4), np.round(m, 4), np.round(D1, 4), np.round(D2, 4), np.round(Dx, 4), np.round(g, 4)])
 
 # Вывод таблицы
-print("Функция распределения: 3 / 14 * np.sqrt(x)")
-print(mytable)
+print(table)

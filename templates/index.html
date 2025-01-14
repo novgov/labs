@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Визуализация чисел</title>
+</head>
+<body>
+    <h2>Введите значения:</h2>
+    <form action="/calculate" method="POST">
+        <label for="a">a:</label><br>
+        <input type="number" id="a" name="a" step="any"><br>
+
+        <label for="b">b:</label><br>
+        <input type="number" id="b" name="b" step="any"><br>
+
+        <label for="n">N:</label><br>
+        <input type="number" id="n" name="n" min="2"><br>
+
+        <button type="submit">Расчитать</button>
+    </form>
+<style>
+    /* Основные стили для body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Стили для заголовка */
+h2 {
+    color: #333;
+    margin: 20px 0;
+    text-align: center;
+}
+
+/* Стили для формы */
+form {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Стили для меток */
+label {
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Стили для полей ввода */
+input[type="number"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+/* Стили для кнопки */
+button[type="submit"] {
+    background-color: #4a76a8;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 15px;
+    text-align: center;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #3b5998;
+}
+
+    </style>
+</body>
+</html>
