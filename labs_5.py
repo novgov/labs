@@ -34,23 +34,25 @@ def make_fig(nums):
 
 @app.route('/')
 def index():
-    return render_template('index.html', need_lambda=True)
+    return render_template('index_for_5.html')
 
 @app.route('/calculate', methods=['POST'])
 def calculate():
     try:
-        a = float(request.form['a'])
-        b = float(request.form['b'])
-        l = float(request.form['l'])
+        m = float(request.form['m'])
+        si = float(request.form['si'])
         N = int(request.form['n'])
 
-        Mx = 1 / l
-        Dx = 1 / l**2
+        Mx = 0
+        Dx = 1
         r = np.random.uniform(0, 1, size=N)
         all_x = []
         for ri in r:
-            xi = - 1/l * math.log(1 - ri)
-            all_x.append(xi)
+            xi = 0
+            for j in range(12):
+                xi += ri
+
+            all_x.append((si*xi)+m)
 
         m = sum(all_x) / N
         g = sum([xi ** 2 for xi in all_x]) / N - m ** 2
@@ -59,12 +61,13 @@ def calculate():
         D2 = abs(Dx - g)
 
         result = [round(x, 4) for x in all_x[:20]]
-        type = "Показательное распределение"
+        type = "Нормальное распределение"
 
         plot_url = make_fig(result)
-        return render_template('result.html', result=result, d1=D1, d2=D2, a=a, b=b, N=N, type=type, plot_url=plot_url)
+        return render_template('result_for_5.html', result=result, d1=D1, d2=D2, m=m, si=si, N=N, type=type, plot_url=plot_url)
     except ValueError:
         return render_template("error.html", error="Ошибка: неверный формат входных данных.")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
