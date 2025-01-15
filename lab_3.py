@@ -34,7 +34,8 @@ def calculate():
 
         result = [round(x, 4) for x in all_x[:20]]
 
-        return render_template('result.html', result=result, d1=D1, d2=D2, a=a, b=b, N=N)
+        type = "Показательное распределение"
+        return render_template('result.html', result=result, d1=D1, d2=D2, a=a, b=b, N=N, type=type)
     except ValueError:
         return render_template("Ошибка: неверный формат входных данных.")
 
