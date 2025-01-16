@@ -9,8 +9,28 @@ matplotlib.use('Agg')
 
 app = Flask(__name__)
 
+
 def make_fig(nums):
-    fig = sns.histplot(nums, bins=5, kde=True)
+    fig, ax = plt.subplots()
+
+    # Создаем исходный гистограмм
+    n, bins, patches = ax.hist(nums, bins=4, color='green', alpha=0.75)
+
+    # Получаем высоты столбцов и их положение
+    heights = n
+    bin_centers = (bins[:-1] + bins[1:]) / 2
+
+    # Вычисляем новые значения для оси Y
+    new_heights = (heights / np.sum(heights)) / (bins[1] - bins[0])
+
+    # Создаем новый график с новыми значениями
+    ax.clear()  # Очищаем предыдущий график
+    ax.bar(bin_centers, new_heights, width=bins[1] - bins[0], color='green', alpha=0.75)
+
+    plt.xlabel('Интервал')
+    plt.ylabel('Нормированная частота')
+    plt.title('Равномерное распределение')
+    plt.grid(True)
 
     buf = io.BytesIO()
     fig.savefig(buf, format='png')
@@ -18,10 +38,10 @@ def make_fig(nums):
 
     img_str = base64.b64encode(buf.getvalue()).decode('utf-8')
 
-    # Закрытие фигуры
     plt.close(fig)
 
     return f'data:image/png;base64,{img_str}'
+
 
 @app.route('/')
 def index():
@@ -53,11 +73,11 @@ def calculate():
 
         result = list(sorted([round(x, 4) for x in all_x[:20]]))
         plot_url = make_fig(result)
-        type = "Показательное распределение"
+        type = "Равномерное распределение"
         return render_template('result.html', result=result, d1=D1, d2=D2, a=a, b=b, N=N, type=type, plot_url=plot_url)
     except ValueError:
         return render_template("Ошибка: неверный формат входных данных.")
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5555)
