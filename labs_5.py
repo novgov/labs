@@ -38,26 +38,26 @@ def index():
 @app.route('/calculate', methods=['POST'])
 def calculate():
     try:
-        m = float(request.form['m'])
+        M = float(request.form['m'])
         si = float(request.form['si'])
         N = int(request.form['n'])
 
-        Mx = 0
-        Dx = 1
-        r = np.random.uniform(0, 1, size=N)
+        Mx = M
+        Dx = si**2
+        r = np.random.normal(M, si, size=N)
         all_x = []
         for ri in r:
             xi = 0
-            for j in range(12):
+            for _ in range(12):
                 xi += ri
 
-            all_x.append((si*xi)+m)
+            all_x.append((si*xi)+M)
 
         m = sum(all_x) / N
         g = sum([xi ** 2 for xi in all_x]) / N - m ** 2
 
-        D1 = abs(Mx - m)
-        D2 = abs(Dx - g)
+        D1 = abs(M - np.mean(r))
+        D2 = abs(si - np.std(r, ddof=1))
 
         result = [round(x, 4) for x in all_x[:20]]
         type = "Нормальное распределение"

@@ -39,8 +39,6 @@ def index():
 @app.route('/calculate', methods=['POST'])
 def calculate():
     try:
-        a = float(request.form['a'])
-        b = float(request.form['b'])
         l = float(request.form['l'])
         N = int(request.form['n'])
 
@@ -62,7 +60,7 @@ def calculate():
         type = "Нормальное распределение"
 
         plot_url = make_fig(result)
-        return render_template('result.html', result=result, d1=D1, d2=D2, a=a, b=b, N=N, type=type, plot_url=plot_url, l=l)
+        return render_template('result.html', result=result, d1=D1, d2=D2, N=N, type=type, plot_url=plot_url, l=l)
     except ValueError:
         return render_template("error.html", error="Ошибка: неверный формат входных данных.")
 
