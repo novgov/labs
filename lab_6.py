@@ -72,6 +72,7 @@ def calculate():
         D2 = abs(Dx - g)
 
         result = list(sorted([round(x, 4) for x in all_x[:20]]))
+        # result = [0,1,2,0,1,3,0,0,1,1,2,0,1,0,1,2,3,0,0,1]
         plot_url = make_fig(result)
         type = "Равномерное распределение"
         return render_template('result.html', result=result, d1=D1, d2=D2, a=a, b=b, N=N, type=type, plot_url=plot_url)
