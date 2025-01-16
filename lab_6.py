@@ -1,8 +1,27 @@
 from flask import Flask, render_template, request
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import io
+import base64
+import matplotlib
+matplotlib.use('Agg')
 
 app = Flask(__name__)
 
+def make_fig(nums):
+    fig = sns.histplot(nums, bins=5, kde=True)
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png')
+    buf.seek(0)
+
+    img_str = base64.b64encode(buf.getvalue()).decode('utf-8')
+
+    # Закрытие фигуры
+    plt.close(fig)
+
+    return f'data:image/png;base64,{img_str}'
 
 @app.route('/')
 def index():
@@ -33,28 +52,14 @@ def calculate():
         D2 = abs(Dx - g)
 
         result = list(sorted([round(x, 4) for x in all_x[:20]]))
-        min = result[0]
-        max = result[19]
-        h = (max - min) / M
-        data_for_gisto = []
-        dict_for_gisto = {}
-        counter_for_x = 0
-        for i in range(int(max//h)):
-            left_x = counter_for_x
-            right_x = counter_for_x + h
-            for j in result:
-                if j >= left_x and j < right_x:
-                    key = right_x
-                    if key not in dict_for_gisto.keys():
-                        dict_for_gisto.update({right_x: 1})
-                    else:
-                        dict_for_gisto[key] += 1
-            counter_for_x = right_x
+        plot_url = make_fig(result)
+
+
 
 
 
         type = "Показательное распределение"
-        return render_template('result.html', result=result, d1=D1, d2=D2, a=a, b=b, N=N, type=type)
+        return render_template('result.html', result=result, d1=D1, d2=D2, a=a, b=b, N=N, type=type, plot_url=plot_url)
     except ValueError:
         return render_template("Ошибка: неверный формат входных данных.")
 
