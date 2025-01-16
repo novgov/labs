@@ -51,15 +51,15 @@ def calculate():
             for _ in range(12):
                 ri = np.random.uniform(0, 1, size=1)[0]
                 xi += ri
-            xi = xi - 6
+            xi -= 6
 
             all_x.append((si*xi) + M)
 
-        m = sum(r) / N
-        g = sum([xi ** 2 for xi in r]) / N - m ** 2
+        m = sum(all_x) / N
+        g = sum([xi ** 2 for xi in all_x]) / N - m ** 2
 
-        D1 = abs(M - np.mean(r))
-        D2 = abs(si - np.std(r, ddof=1))
+        D1 = abs(M - np.mean(all_x))
+        D2 = abs(si - np.std(all_x, ddof=1))
 
         result = [round(x, 4) for x in all_x[:20]]
         type = "Нормальное распределение"
