@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
 import numpy as np
-import math
 import io
 import base64
 import matplotlib.pyplot as plt
