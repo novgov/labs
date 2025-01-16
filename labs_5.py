@@ -44,9 +44,9 @@ def calculate():
 
         Mx = M
         Dx = si**2
-        r = np.random.uniform(0, 1, size=N)
+
         all_x = []
-        for ri in r:
+        for _ in range(N):
             xi = 0
             for _ in range(12):
                 ri = np.random.uniform(0, 1, size=1)[0]
