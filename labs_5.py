@@ -44,17 +44,19 @@ def calculate():
 
         Mx = M
         Dx = si**2
-        r = np.random.normal(M, si, size=N)
+        r = np.random.uniform(0, 1, size=N)
         all_x = []
         for ri in r:
             xi = 0
             for _ in range(12):
+                ri = np.random.uniform(0, 1, size=1)[0]
                 xi += ri
+            xi = xi - 6
 
-            all_x.append((si*xi)+M)
+            all_x.append((si*xi) + M)
 
-        m = sum(all_x) / N
-        g = sum([xi ** 2 for xi in all_x]) / N - m ** 2
+        m = sum(r) / N
+        g = sum([xi ** 2 for xi in r]) / N - m ** 2
 
         D1 = abs(M - np.mean(r))
         D2 = abs(si - np.std(r, ddof=1))
@@ -63,7 +65,7 @@ def calculate():
         type = "Нормальное распределение"
 
         plot_url = make_fig(result)
-        return render_template('result_for_5.html', result=result, d1=D1, d2=D2, m=m, si=si, N=N, type=type, plot_url=plot_url)
+        return render_template('result_for_5.html', result=result, d1=D1, d2=D2, si=si, N=N, type=type, plot_url=plot_url)
     except ValueError:
         return render_template("error.html", error="Ошибка: неверный формат входных данных.")
 
