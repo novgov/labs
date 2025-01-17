@@ -10,11 +10,23 @@ matplotlib.use('Agg')
 app = Flask(__name__)
 
 
-def make_fig(nums):
+def calculate_delta(chastota, num_intervals):
+    total_observations = sum(chastota)
+    normalized_chast = [freq / total_observations for freq in chastota]
+
+    p = 0.2
+
+    delta = sum((normalized_freq - p) ** 2 / p
+                for normalized_freq in normalized_chast)
+
+    return delta
+
+
+def make_fig(nums, M, N):
     fig, ax = plt.subplots()
 
     # Создаем исходный гистограмм
-    n, bins, patches = ax.hist(nums, bins=4, color='green', alpha=0.75)
+    n, bins, patches = ax.hist(nums, bins=M, color='green', alpha=0.75)
 
     # Получаем высоты столбцов и их положение
     heights = n
@@ -22,6 +34,8 @@ def make_fig(nums):
 
     # Вычисляем новые значения для оси Y
     new_heights = (heights / np.sum(heights)) / (bins[1] - bins[0])
+    delta_value = calculate_delta(heights, 5)
+
 
     # Создаем новый график с новыми значениями
     ax.clear()  # Очищаем предыдущий график
@@ -31,6 +45,10 @@ def make_fig(nums):
     plt.ylabel('Нормированная частота')
     plt.title('Равномерное распределение')
     plt.grid(True)
+
+    # Добавляем текст с значением delta
+    ax.text(0.05, 0.95, f'delta = {delta_value:.4f}', transform=ax.transAxes,
+            fontsize=12, bbox=dict(facecolor='white', alpha=0.8))
 
     buf = io.BytesIO()
     fig.savefig(buf, format='png')
@@ -57,6 +75,9 @@ def calculate():
 
         M = 5
 
+        # Фиксированное зерно для воспроизводимости
+        np.random.seed(42)
+
         Mx = (a + b) / 2
         Dx = ((b - a) ** 2) / 12
         r = np.random.uniform(0, 1, size=N)
@@ -64,7 +85,8 @@ def calculate():
         for ri in r:
             xi = a + (ri * (b - a))
             all_x.append(xi)
-            # вычисление погрешности
+
+        # вычисление погрешности
         m = sum(all_x) / N
         g = sum([xi ** 2 for xi in all_x]) / N - m ** 2
 
@@ -72,8 +94,8 @@ def calculate():
         D2 = abs(Dx - g)
 
         result = list(sorted([round(x, 4) for x in all_x[:20]]))
-        # result = [0,1,2,0,1,3,0,0,1,1,2,0,1,0,1,2,3,0,0,1]
-        plot_url = make_fig(result)
+        #result = [0,1,2,0,1,3,0,0,1,1,2,0,1,0,1,2,3,0,0,1]
+        plot_url = make_fig(result, M, N)
         type = "Равномерное распределение"
         return render_template('result.html', result=result, d1=D1, d2=D2, a=a, b=b, N=N, type=type, plot_url=plot_url)
     except ValueError:
