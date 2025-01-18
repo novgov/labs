@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 import io
 import base64
 import matplotlib
@@ -10,7 +9,7 @@ matplotlib.use('Agg')
 app = Flask(__name__)
 
 
-def calculate_delta(chastota, num_intervals):
+def calculate_delta(chastota):
     total_observations = sum(chastota)
     normalized_chast = [freq / total_observations for freq in chastota]
 
@@ -47,7 +46,7 @@ def make_fig(nums, M, N):
     plt.grid(True)
 
     # Добавляем текст с значением delta
-    ax.text(0.05, 0.95, f'delta = {delta_value:.4f}', transform=ax.transAxes,
+    ax.text(0.10, 0.95, f'delta = {delta_value:.4f}', transform=ax.transAxes,
             fontsize=12, bbox=dict(facecolor='white', alpha=0.8))
 
     buf = io.BytesIO()

@@ -59,7 +59,7 @@ def calculate():
         result = [round(x, 4) for x in all_x[:20]]
         type = "Нормальное распределение"
 
-        plot_url = make_fig(result)
+        plot_url = make_fig(all_x)
         return render_template('result.html', result=result, d1=D1, d2=D2, N=N, type=type, plot_url=plot_url, l=l)
     except ValueError:
         return render_template("error.html", error="Ошибка: неверный формат входных данных.")
